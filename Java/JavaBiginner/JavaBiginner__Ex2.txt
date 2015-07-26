@@ -1,0 +1,265 @@
+
+2.制御,キャスト,メソッド,ポリモフィズム,配列について
+Javaではプログラムを制御するのに
+・for
+・拡張for
+・while
+・switch
+・if
+・else if
+・(equals)
+を、使用する。意外と少なくお手軽。
+
+for文　		繰り返し処理を行う場合の制御。
+拡張for文　	配列内の要素を代入する繰り返し処理に適した制御。
+while文		要素数が不確定である繰り返し処理を行う場合に適した制御。
+switch文		処理を切り替えたい場合に適した制御。
+if			条件処理の制御。
+else if 	ifと同じようなもの。とりあえず多くの条件処理を行う場合の制御。
+equals 		文字列比較をする際に使うメソッド。基本的に文字列を比較する際は「==」は使わない。制御とは少々違うが、覚えておいてほしいもの。
+
+
+例題1　とりあえず書いてみよう
+public class Ex2Sample1{
+	public static void main(String[] args){
+		try{
+			Scanner sc = new Scanner(System.in);
+			System.out.println("数字を入力してね");
+			int num = Integer.parseInt(sc.nextLine());
+
+
+			if(num % 3 == 0){
+				System.out.println("3の倍数");
+			}
+			else if(num % 2 == 0){
+				System.out.println("偶数");
+			}
+			else{
+				System.out.println("その他");
+			}
+		}
+		catch(Exception e){
+			System.out.println("少数だったり文字だったり");
+		}
+	}
+}
+
+
+ついでだからScanner、try,catch文も覚えよう。try,catch文は、try内の処理にエラーがあったらcatchにとぶ。
+if,else if文はこんな感じだ。
+また、Integer.parseInt(sc.nextLine())という文があるが、これはキャストと呼ばれるもの。
+String型は文字列を扱う型であり、数字を扱う型ではない。このように、文字列を数字に変換する場合は、
+「Integer.parseInt()」メソッドを使用して「キャスト」をする。
+
+よく使うキャスト
+Integer.parseInt()	文字　=>  数字
+String.valueOf()	数字　=>  文字
+
+
+
+例題2 とりあえず書いてみよう
+switch,for,while文の長所を取り入れた例題　
+
+public class Ex2Sample2{
+	public static void main(String[] args){
+		try{
+			Scanner sc = new Scanner(System.in);
+			System.out.println("数字を入力");
+			int num = Integer.parseInt(sc.nextLine());
+
+			System.out.println("10倍を求めるなら「1」");
+			System.out.println("階乗を求めるなら「2」を入力");
+
+			int operate = Integer.parseInt(sc.nextLine());
+
+			int sum;
+
+			switch(operate){
+			case 1:
+				sum = 0;
+				for(int i=0; i < 10; i++){
+					sum += num;
+				}
+
+				System.out.println(sum);
+
+				break;
+
+			case 2:
+				sum = num;
+				int i = num -1;
+				while(i != 0){
+					sum = sum * (num -1);
+					num--;
+					i--;
+				}
+
+				System.out.println(sum);
+				break;
+			}
+		}
+		catch(Exception e){
+			System.out.println("エラー");
+		}	
+	}
+}
+
+
+上記の例題では、「10倍」と繰り返す回数が決まっている場合はfor文を使用し、「階乗」では繰り返す回数が決まっていないのでwhile文を用いた。また、switch文の説明にあった処理の切り替えとはこのようなことである。
+
+演習1
+switch文,if文,for文を用いたプログラムを自分で考えて作りなさい。
+
+
+
+
+しかし、switch文を使用してモード切替が出来たはいいがcase内に全ての処理を記述していると、規模が大きくなるにつれ可読性が損なわれ、運用・保守フェーズで甚大な悪影響がでることが予測できるだろう。
+これではJavaの良さを全く取り入れていない。
+そこで、「メソッド」,「ポリモフィズム」について学ぼう。
+
+
+例題3 とりあえず書いてみよう
+ポリモフィズム、オーバロードの具体例
+
+public class Ex2Sample3{
+	public static void main(String[] args){
+
+		try{
+			String[] pepoles = {"Morosawa","Inoue","Tanaka"};
+
+			for(String pepole : pepoles){
+				System.out.println(pepole);
+			}
+
+			System.out.println("あなたの名前はありますか？y/n");
+
+			Scanner sc = new Scanner(System.in);
+			String operate = sc.nextLine();
+
+			if(operate.equals("y")){
+				System.out.println(answerText());
+			}
+			else if(operate.equals("n")){
+				System.out.println("あなたの名前は？");
+				String your_name = sc.nextLine();
+				System.out.println(answerText(your_name));
+			}
+			else{
+				System.out.println("yかnで回答してください。");
+			}
+
+
+		}
+		catch(Exception e){
+			System.out.println("エラー");
+		}
+
+	}
+
+	static private String answerText() throws Exception{
+		return "あなたの名前はこの中のどれかですね。";
+	}
+	static private String answerText(String your_name) throws Exception{
+		return "あなたの名前は" + your_name  + "なんですね。";
+	}
+}
+
+
+equals()メソッド、オーバロード、ポリモフィズムを具体的に記述したサンプルコード。
+一般的に、ここの内容は独学だと曖昧になっていたり、分かったつもりになっている人ばかりいるので感謝してください。
+
+
+まず注目したい点は、answerText()メソッドとanswerText(String your_name)メソッドがある点。
+answerTextメソッドが2つあります。しかし、一方は引数がなく、もう一方はString型の引数を持ちます。
+このように、同名のメソッドであるにも関わらず異なる処理を行うことを、オーバロード、ポリモフィズムと呼び、Java特有の挙動です。
+
+では、なぜポリモフィズムが素晴らしいのか？
+
+=> 運用・保守フェーズの負担が圧倒的に減る。
+
+これにつきます。システム開発では1万行なんて当たり前のレベルの話(鯖プロでも1万は超えた)のため、後々バグ報告が来た際に以下に迅速な対応ができるかどうかがエンジニアの腕の見せ所です。
+書いて終わり、動いて終わりなんてありえません。
+
+メソッド名を変えたい気持ちは非常に分かるのですが、メソッド名が多ければ多いほど探すのが大変です。
+もしメソッド名を統一していたら、限られたメソッド名でキーワード検索すればメソッドをすぐに発見できます。
+ちなみに、eclipseやsublimeで「Ctrl」＋「F」を押すとキーワード検索ができます。
+
+
+
+演習2
+ポリモフィズム、for文、拡張for文、switch文、while文、try,catch文を取り入れたプログラムを自分で考えて作りなさい。
+また、複数クラスやメソッドを作成していいが、1つのプログラムとして作成しなさい。
+
+
+
+
+メソッドについて
+メソッドとはなにか？処理のかたまりと言ってしまおう。
+注意点はメソッドにも「型」が存在する。
+しかし、void以外はオブジェクトの作成と同じ感覚で作れば意外と容易。
+
+void
+voidは結果（戻り値）を必要としないもの。つまりデータの変更や挿入などのデータをいじるときに使う。
+
+
+その他のメソッド
+その他のメソッドは、戻り値が必ず必要。データの照会をするときなどに使う。
+
+
+
+例題4
+voidメソッド
+public class Ex2Sample4{
+	static String title;
+	public static void main(String[] args){
+		String str = "Java入門";
+		toString(str);
+		System.out.println(title);
+
+	}
+
+	public static void toString(String str){
+		title = "「" + str + "」";
+	}
+}
+
+
+見ての通り、Stringで作ったオブジェクトtitleに、voidメソッドを使って加工している。
+この場合、加工しているだけ（データを操作）なので、戻り値がいらない。
+
+
+
+
+例題5
+Stringメソッド
+public class Ex2Sample5{
+	public static void main(String[] args){
+		String title = toString("Java入門");
+		System.out.println(title);
+	}
+
+	public static String toString(String str){
+		String title = "「" + str + "」";
+		return title;
+	}
+}
+void以外のメソッドの一例。この場合は、toStringメソッドに文字列を入れ、メインメソッドでtitleに代入している。
+String型のtitleに代入するということは、何かの文字列でなければ代入できない。そのため、この例でのtoStringメソッドは、
+戻り値を必要とする。
+
+
+以上2つのメソッドの種類について説明したが、データの流れが少し変わってくる。
+データを操作するのかデータを照会したいのか、常に頭に入れてプログラムを組もう。
+
+
+演習3
+自分でvoidメソッドを使ったプログラムを考えて作る。
+ただし、50行以上のものとする。
+
+
+演習4
+自分でvoid以外のメソッドを使ったプログラムを考えて作る。
+ただし、50行以上のものとする。
+
+
+

@@ -1,0 +1,145 @@
+
+1.データ型,クラス型,変数について
+
+Javaで主に用いられるデータ型
+基本データ型	
+int
+long
+float
+boolean 
+
+Stringクラス型
+String
+
+
+オブジェクトを作成するとき、
+int num;
+などと宣言する。
+
+
+変数
+int x;
+int y;
+
+x = 10;
+y = 20;
+
+と、宣言をしてオブジェクトを作れば自由に値を入れられ、インスタンスを作れる。
+
+
+
+例題1 とりあえず書いてみよう
+
+public class Ex1Sample1{
+	public static void main(String[] args){
+		int num1 = 100;
+		int num2 = 200;
+
+		int result = num2 - num1;
+
+		String msg;
+
+		boolean jud = false;
+
+		if(result > 0){
+			jud = true;
+		}
+
+		if(jud){
+			msg = "正";
+		}
+		else{
+			msg = "負";
+		}
+
+		System.out.println(msg);
+	}
+}
+
+演習1
+データの流れを50字程度で説明。
+
+
+演習2
+ある数「201」と、ある数「100」の剰余を求めて、その結果をコンソールに出す。
+
+
+
+
+
+
+
+実はStringは基本データ型ではなく、クラス型。
+その証拠に"S"が大文字。
+ちなみに、よく目にするSystem.out.println();は、Systemクラスのoutフィールド内のprintln()メソッドである。
+
+
+クラス型
+Javaでは、
+・プロジェクト
+・パッケージ
+・クラス
+・フィールド
+・メソッド
+と、細かくアーカイブする。
+
+import java.util.*
+
+などの「import」は、現在使用しているクラス外のパッケージからクラスを利用する際に宣言する文。
+
+
+これらはさておき、クラス型とはなにか？
+文字通りクラスからオブジェクトを作ることである。
+
+
+
+
+
+
+例題2  とりあえず書いてみよう
+Sample2クラス
+public class Ex1Sample2{
+	public static void main(String[] args){
+		int num1 = 100;
+		int num2 = 200;
+		Total tl = new Total(num1,num2);
+		System.out.println(tl.totalNum());
+	}
+}
+
+Totalクラス
+public class Total{
+	private int num1;
+	private int num2;
+	private int total;
+
+	public Total(int num1,int num2){
+		this.num1 = num1;
+		this.num2 = num2;
+	}
+	public int totalNum(){
+		total = num1 + num2;
+		return total;
+	}
+}
+
+この例題では、メインメソッドのあるクラスで、Totalクラスの型でtlオブジェクトを作っている。
+理解している人が意外と少ないが、new演算子ではコンストラクタを呼び出している。
+上記例題ではTotalクラスのコンストラクタを呼び出し、Sample2クラスのnum1,num2をTotalクラスに渡している。
+
+ここででてきた「this」キーワードだが、これは引数として渡されたnum1とnum2を、thisが用いられたクラス内（Totalクラス）の変数として認識する、という意味である。
+
+演習3
+1.クラス「Ensyu」とクラス「Dentaku」を作成する。
+2.Ensyuクラスでインスタンス「100」と「200」を作成し、Dentakuクラスにそのインスタンスを引数として渡す。また、この時にDentakuクラス型の「dt」オブジェクトを作成する。
+3.Dentakuクラスでは、「sumNum」「minusNum」「dotNum」「parNum」メソッドを作成し、それぞれ2つの引数を「足す」「引く」「かける」「割る」処理をし、returnにその値を返す。
+4.Ensyuクラスでは、Dentakuクラスで処理された値の結果を出力する。
+
+
+
+
+
+演習4
+オブジェクトとインスタンスの違いを20字程度で説明。
+
+

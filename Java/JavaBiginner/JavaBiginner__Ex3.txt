@@ -1,0 +1,281 @@
+3.コレクションについて
+複数のオブジェクトを管理するものをコレクションという。
+
+List　　順序付けられたオブジェクトの集まり。要素の重複、インデックスあり。
+Map 　　キーと要素が一組になったもの。
+Set　　　重複要素なし。順序はなく、インデックスもない。
+
+
+Listへの追加はadd、取得はget(index)
+Mapへの追加はput(key,value)、取得はget(key)
+Setへの追加はadd(str)、取得はイテレータ、拡張for文など
+
+例題1
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+public class Ex3Sample1{
+	public static void main(String[] args){
+		List<String> lists = new LinkedList<String>();
+		Map<String,String> maps = new HashMap<String,String>();
+		Set<String> sets = new HashSet<String>();
+
+		//listに追加
+		lists.add("item1");
+		lists.add("item2");
+		lists.add("item3");
+
+		//mapに追加
+		maps.put("apple", "red");
+		maps.put("banana", "yellow");
+		maps.put("melon", "green");
+
+		//setに追加
+		sets.add("java");
+		sets.add("php");
+		sets.add("sass");
+
+
+		System.out.println("Listの取得");
+		//listの取得
+		//全部取得する場合
+		for(String list:lists){
+			System.out.println(list);
+		}
+		System.out.println();
+		//一部を取得する場合
+		System.out.println(lists.get(0));
+		System.out.println(lists.get(1));
+		System.out.println(lists.get(2));
+
+		System.out.println("\nMapの取得");
+
+		//mapの取得
+		//全部を取得する場合
+		Iterator<String> it = maps.keySet().iterator();
+		while(it.hasNext()){
+			System.out.println(maps.get(it.next()));
+		}
+		System.out.println();
+		//一部を取得する場合
+		System.out.println(maps.get("apple"));
+		System.out.println(maps.get("banana"));
+		System.out.println(maps.get("melon"));
+
+		System.out.println("\nSetの取得");
+
+		//setの取得
+		//基本全件取得のみ
+		Iterator<String> it2 = sets.iterator();
+		while(it2.hasNext()){
+			System.out.println(it2.next());
+		}
+	
+	}
+}
+
+例題のようにList、Map、Setの追加や取得をする。
+
+
+
+演習1
+追加用、取得用のメソッドを作成し、メインメソッドで出力せよ。
+下記穴埋め。
+
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+public class Ex3Ensyu1{
+	static List<String> lists = new LinkedList<String>();
+	static Map<String,String> maps = new HashMap<String,String>();
+	static Set<String> sets = new HashSet<String>();
+
+	public static void main(String[] args){
+		insert();
+		System.out.println(select(lists));
+		System.out.println(select(maps));
+		System.out.println(select(sets));
+	}
+
+
+//List,Map,Setに値を追加するinsert()メソッドを作成
+
+//Listを取得するselect()メソッドを作成
+//Mapを取得するselect()メソッドを作成
+//Setを取得するselect()メソッドを作成
+}
+
+
+コンソールはこんな感じ。1つの要素ずつ取得したい場合はメソッド内で取得。
+[item1, item2, item3]
+{banana=yellow, melon=green, apple=red}
+[sass, php, java]
+
+
+
+
+
+演習2　簡易商品管理システム構築 ちょいむず？
+要件定義
+1.商品追加ができる。
+2.商品追加では、ユーザが「商品名」、「価格」を入力し、その情報を保持する。
+3.また、今回はDBを使わずにstaticなMapオブジェクトにデータを保持する。
+
+4.商品照会ができる。
+5.商品照会では、商品名一覧と、ユーザに指定された商品の値段を照会できるものとする。また、ユーザが指定する内容は、「商品名」とする。
+
+6.また、各々エラー処理をし、一連の処理が終了した際は初期画面(startメソッドの呼び出し)へと遷移する。
+
+
+下記穴埋め。ソースの下にコンソール結果があるので、参考に。
+ちょっと長いけどコピペしないように。
+
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Scanner;
+
+public class {
+	static Map<String,Integer> maps = new HashMap<String,Integer>();
+	static Scanner sc = new Scanner(System.in);
+
+	public static void main(String[] args){
+		start();
+	}
+
+	public static void start(){
+		try{
+			System.out.println("商品追加は0,照会は1を入力してください。");
+			String jud = sc.nextLine();
+
+			switch(Integer.parseInt(jud)){
+				case 0:
+					add();
+				break;
+
+				case 1:
+					select();
+				break;
+
+			}
+		}
+		catch(Exception e){
+			System.out.println("入力にエラーがあります。\n");
+			start();
+		}
+	}
+
+	private static void add(){
+		try{
+			/*
+
+
+			ユーザに要件定義で定めた項目を入力してもらい、mapにデータの保持。
+
+
+			*/
+			start();
+		}
+		catch(Exception e){
+			System.out.println("入力にエラーがあります。");
+			start();
+		}
+
+	}
+	private static void select(){
+		try{
+			System.out.println("商品名一覧を閲覧する場合は0,商品価格を閲覧する場合は1を入力してください。");
+			String jud = sc.nextLine();
+
+			switch(Integer.parseInt(jud)){
+				case 0:
+					System.out.println("商品名一覧");
+
+					/*
+
+
+					商品が1つでもあれば商品名の一覧を表示。
+					なければ商品がないと表示。
+					また、商品価格は表示しない。
+
+
+					*/
+
+
+					start();
+
+				break;
+
+				case 1:
+					System.out.println("商品名を入力してください。");
+					String name = sc.nextLine();
+
+					/*
+
+					入力された商品があれば価格と商品名を出力。
+					なければ商品がないと表示。
+
+
+					*/
+
+					start();
+				
+				break;
+
+			}
+		}catch(Exception e){
+			System.out.println("エラーがあります。初期画面に戻ります。\n");
+			start();
+		}
+	}
+}
+
+
+
+
+コンソール
+商品追加は0,照会は1を入力してください。
+0
+商品名を入力してください。
+java入門
+商品価格を入力してください。
+1800
+商品が正常に追加されました。
+商品追加は0,照会は1を入力してください。
+0
+商品名を入力してください。
+Sass入門
+商品価格を入力してください。
+2800
+商品が正常に追加されました。
+商品追加は0,照会は1を入力してください。
+1
+商品名一覧を閲覧する場合は0,商品価格を閲覧する場合は1を入力してください。
+0
+商品名一覧
+Sass入門
+java入門
+商品追加は0,照会は1を入力してください。
+1
+商品名一覧を閲覧する場合は0,商品価格を閲覧する場合は1を入力してください。
+1
+商品名を入力してください。
+java入門　				（※タイプミスしちゃった！）
+その商品はありません。
+商品追加は0,照会は1を入力してください。
+1
+商品名一覧を閲覧する場合は0,商品価格を閲覧する場合は1を入力してください。
+1
+商品名を入力してください。
+java入門
+java入門 の商品価格は、1800
+商品追加は0,照会は1を入力してください。

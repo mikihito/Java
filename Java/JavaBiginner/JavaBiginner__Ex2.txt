@@ -55,6 +55,9 @@ String型は文字列を扱う型であり、数字を扱う型ではない。�
 Integer.parseInt()	文字　=>  数字
 String.valueOf()	数字　=>  文字
 
+あんま使わないけど一応
+Double.parseDouble()
+
 
 
 例題2 とりあえず書いてみよう

@@ -1,0 +1,279 @@
+継承
+
+継承とは、あるクラスの特徴を別のクラスが引き継ぐことが出来る機能である。
+機能を提供するクラスをスーパークラス、機能を提供されるクラスをサブクラスと言ったりする。
+また、次の項目で説明するが、システムを設計をするにあたり「機能の標準化」をすることも可能である。
+
+
+以上をまとめると、具体的な継承を利用する場面は、
+・機能を拡張、または再利用したいとき
+・クラスを設計するにあたり、処理を標準化したいとき
+である。
+
+
+例題1
+機能の拡張
+
+SuperClassクラス
+public class SuperClass {
+	private static String[] name = {"Java入門","PHP入門","Sass入門"};
+	protected static int price = 2000;
+
+
+	protected static int totalPrice(){
+		return price;
+	}
+
+	protected static String[] receipt(){
+		return name;
+	}
+
+}
+
+
+SubClassクラス
+public class SubClass extends SuperClass{
+	private static int num = 3;
+
+	public static void main(String[] args){
+		System.out.println("購入された商品");
+		for(String item:receipt()){
+			System.out.println(item);
+		};
+
+		System.out.println("\n合計金額");
+		System.out.println(totalPrice() + "円");
+	}
+
+	public static int totalPrice(){
+		return price * num;
+	}
+
+}
+
+
+例題1では、スーパークラスのtotalPrice()メソッドを、サブクラスで再定義している。このことを、オーバーライドという。
+機能の拡張をするときに使われる技術である。また、receipt()メソッドは、スーパークラスで定義しているので、サブクラス
+で利用することが出来る点にも注目しよう。
+
+
+
+
+
+例題2  なかなかむずい
+機能の標準化 & 機能の拡張
+一番使われる継承のデザイン
+
+
+SuperClassクラス
+import java.util.LinkedList;
+
+abstract class SuperClass {
+	abstract protected int totalPrice();
+	abstract protected String itemName(String name);
+	abstract protected void receipt(LinkedList<String> ll);
+}
+
+
+
+
+SubClassクラス
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.Map;
+
+public class SubClass extends SuperClass{
+	public static String receipt;
+	protected static Map<String,Integer> items = new HashMap<String,Integer>();
+
+	@Override
+	protected int totalPrice() {
+		int total_price = 0;
+		Iterator<String> it = items.keySet().iterator();
+		while(it.hasNext()){
+			total_price += items.get(it.next());
+		}
+		return total_price;
+	}
+
+	@Override
+	protected String itemName(String name) {
+		return name + "：" + items.get(name) + "円";
+	}
+
+	@Override
+	protected void receipt(LinkedList<String> ll) {
+		Iterator<String> it = items.keySet().iterator();
+		ll.add("購入された商品");
+		while(it.hasNext()){
+			ll.add(itemName(it.next()));
+		}
+
+		ll.add("\n合計金額");
+		ll.add(String.valueOf(totalPrice()) + " 円");
+
+	}
+}
+
+
+Mainクラス
+import java.util.Iterator;
+import java.util.LinkedList;
+
+
+public class Main extends SubClass{
+	public static void main(String[] args){
+		LinkedList<String> ll = new LinkedList<String>();
+		SubClass sb = new SubClass();
+		items.put("Java入門",2000);
+		items.put("PHP入門",1800);
+		items.put("Sass入門",2800);
+
+		sb.receipt(ll);
+		Iterator<String> it = ll.iterator();
+		while(it.hasNext()){
+			System.out.println(it.next());
+		}
+
+	}
+}
+
+
+SuperClassクラスでは、abstract修飾子を使用して「メソッドの標準化」を行っている。実際にSubClassクラスを見てみよう。SuperClassクラスで定義したメソッドが全て実装されていることがわかる。
+また、実装しなければエラーが表示される。これは、Javaが「静的型付け言語」であり、その長所を最大限に利用した機能だともいえる。また、スクリプト言語は「動的型付け言語」
+である。
+
+静的型付け　Javaなど
+・コンパイル時に型エラーチェック
+=>エラーを早期に発見できる
+=>コードの安全性を保障できる
+
+動的型付け　PHPなど
+・コンパイル時にはチェックせず、即実行
+=>開発スピードが速くなる（ケースバイケース）
+=>多少冗長なコードを減らせる
+
+
+
+演習1
+Javaでは多重継承の禁止がされている。実際に多重継承をしたプログラムなどを用いて説明せよ。
+
+演習2 ちょっと難しい　　疑似ATMシステムを作ろう！
+機能要求
+・残高照会ができる
+・引き出しができる
+・入金ができる
+・口座に入っているお金は、データベースを用いずにstaticなインスタンスに保持しておくこととする。
+
+クラス設計
+・メソッドの標準化をする一番の親玉、「SuperClass」クラスを作成する
+・「SuperClass」クラスで標準化したメソッドの、具体的な処理を記述するための「SubClass」クラスを作成する
+・入金金額の入力や、処理の切り替えを行う「Main」クラスを作成する
+下記にコンソール結果と穴埋めがあるので、参考に。
+
+SuperClassクラス
+abstract class SuperClass {
+	//　ここ考える。
+
+	//　ここ考える。
+	//　ここ考える。
+	//　ここ考える。
+}
+
+
+SubClassクラス
+public class SubClass extends SuperClass{
+
+//ヒント：これが入金用のメソッド
+
+	@Override
+	protected void add(int add_money) {
+		money += add_money;
+	}
+
+/*
+
+	引き出し用メソッド
+
+*/
+
+
+/*	
+
+	残高照会用メソッド
+
+*/
+}
+
+
+
+Mainクラス
+import java.util.Scanner;
+
+public class Main extends SubClass{
+	static Scanner sc = new Scanner(System.in);
+	public static void main(String[] args){
+		money = 1000;  			// <=ヒント：このクラスでmoneyオブジェクトを作っていない。 ...。ということは...?
+		System.out.println("現在口座には、" + money + " 円があります。");
+		start();
+	}
+	public static void start(){
+		
+		System.out.println("残高照会の場合は0,入金の場合は1,お引き出しの場合は2を入力してください。");
+		int jud = Integer.parseInt(sc.nextLine());
+		/*
+
+
+
+
+
+		ここ考える。
+		switch文などで処理の切り替え。
+
+
+
+
+
+
+
+		*/
+
+		}
+
+	}
+}
+
+
+
+
+
+コンソール　例　初期値を1000円とした場合
+現在口座には、1000 円があります。
+残高照会の場合は0,入金の場合は1,お引き出しの場合は2を入力してください。
+0
+現在の残高は、　1000　円です。
+残高照会の場合は0,入金の場合は1,お引き出しの場合は2を入力してください。
+1
+入金する金額を入力してください。
+20000
+20000円入金しました。
+残高照会の場合は0,入金の場合は1,お引き出しの場合は2を入力してください。
+0
+現在の残高は、　21000　円です。
+残高照会の場合は0,入金の場合は1,お引き出しの場合は2を入力してください。
+2
+お引き出しする金額を入力してください。
+6000
+6000円引き出しました。
+残高照会の場合は0,入金の場合は1,お引き出しの場合は2を入力してください。
+0
+現在の残高は、　15000　円です。
+残高照会の場合は0,入金の場合は1,お引き出しの場合は2を入力してください。
+
+
+
+
+
+
+
